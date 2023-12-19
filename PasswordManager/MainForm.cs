@@ -79,6 +79,9 @@ namespace PasswordManager
                     return;
                 operationInProgress = true;
 
+                if (!VerifyIdentity())
+                    return;
+
                 var menuItem = s as MenuItem;
                 ContextMenu = menuItem.GetContextMenu();
 
@@ -103,6 +106,9 @@ namespace PasswordManager
                 if (operationInProgress)
                     return;
                 operationInProgress = true;
+
+                if (!VerifyIdentity())
+                    return;
 
                 var item = ((System.Windows.Forms.ListView)sender).FocusedItem;
 
@@ -132,6 +138,13 @@ namespace PasswordManager
                 };
                 timer.Start();
             };
+        }
+
+        private bool VerifyIdentity()
+        {
+            var frm = new VerifyForm(userEmail);
+            frm.ShowDialog();
+            return frm.Verified;
         }
 
         private void DeleteCredentialsFor(string platform)
